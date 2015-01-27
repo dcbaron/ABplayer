@@ -3,7 +3,7 @@
 <html>
   <head>
     <style>
-      audio {background-color: #95B9C7;}
+      /*audio {background-color: #95B9C7;}*/
     
       /* latin */
       @font-face {
@@ -26,10 +26,10 @@
         padding:0;
         height:100%;
       }
-      button { 
+      button, #volumeInput { 
         background-color : #004400; 
-        color: #00FF00; 
-        font-family:VT323; 
+        color: inherit; 
+        font-family:inherit; 
         font-size:inherit;
         border-color:#004400;
       }
@@ -49,17 +49,19 @@
         left:0;
         padding:0.5em;
       }
-      #volumeInput {
-      width: 2em;
-      background-color: #004400;
-      color: lime;
-      border-color:#004400;
-      }
+      #volumeInput { width: 2em;}
       #playDiv{
-        font-size:1.2em;
+        font-size:1.2em;margin-top:0.3em;
       }
-      
+      #controls {text-align: center; margin-top:0.3em;}
+      li {clear:both;}
+      ol {padding-left:25px;}
+      li > button, li span:first-of-type {
+        float:right;
+      }
+      .galLibButton {clear:both;}
     </style>
+    
     
     
     
@@ -72,9 +74,9 @@
         <div id="bookTitle" style="font-size:1.25em"></div>
         <div id="songTitle"></div>
         <audio id="player"></audio>
-        <div style="text-align: center; margin-top:0.3em;" id = "controls">
+        <div id = "controls">
           <div id="volumeDiv" style="text-align:right;">
-            Volume: <input id="volumeInput" value="100" style="width:2em;">%
+            Volume: <input id="volumeInput" value="100"">%
           </div>
           <div >
             <span id="currentTimeSpan" style="float:left;"></span>
@@ -86,20 +88,22 @@
             </span>
             <span id="durationSpan" style = "float:right;"></span>
           </div>
-          <div style="margin-top:0.3em;" id="playDiv">
+          <div id="playDiv">
             <button id="prev">Prev</button>
             <button id="playpause" >Play </button>
             <button id="next" >Next</button>
           </div>
         </div>
-        ***<div id="Library" hidden></div>
-           <div><button id="libraryButton" style="margin-top:0.3em;">Library</button></div>
+        ***<ol id="Library" hidden ></ol>
+           <div>
+            <button class="galLibButton" id="libraryButton" >
+            Library</button></div>
         ***<div id="Galleries" hidden>
-            <div id="glistdiv"></div>
-            <button id="newGallery" style="margin-top:0.3em;">New Gallery</button><br>
+            <ol id="glistdiv" ></ol>
+            <button id="newGallery" class="galLibButton">New Gallery</button>
            </div>
            <div>
-            <button id="manageButton" style="margin-top:0.3em;">
+            <button id="manageButton" class="galLibButton">
               Manage Audiobook Folders
             </button>
           </div>

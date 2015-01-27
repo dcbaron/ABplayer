@@ -23,10 +23,9 @@ function create (tag, attributes) {
 function update (O, P) {
    for (k in P) {O[k] = P[k]}}
 
-function makeButton (id, text, onclick,float) {
+function makeButton (id, text, onclick,listing) {
    var b = create("button", {
    id: id, innerHTML : text, onclick : onclick})
-   if (float) b.style.float=float//;b.style.clear=float}
    return b}
 
 function now () {
@@ -205,11 +204,10 @@ function make_glist() {
             Local.remove(gallery.id)
             
             removeGallery(gallery)})
-      b.style.float="right"
       return b}
    
    function renamerButton(gallery) {
-      var span = create("span");span.style.float="right"
+      var span = create("span")
       var box = create("input", {hidden:"true"});
       
       function onclick () {
@@ -245,32 +243,29 @@ function make_glist() {
          var name = o[gallery.id];
          setName(span, name); storeName(gallery, name)})}
    
-   function addLine(gallery, i) {
-      if (!(i || i===0)) i = glist.length
-      
-      var line = create("div") 
-      line.id="glistdiv_" + gallery.id
-      line.innerText = i.toString() + ")"
-      line.style.marginBottom="0.35em"
+   function addLine(gallery) {
+      var line = create("li") 
+      //line.id="glistdiv_" + gallery.id
+      //line.class="listingDiv"
       
       var span = create("span", {id: "displayName_"+gallery.id})
-      span.style.marginLeft="4em"
       getAndSetName(gallery, span)
       
-      line.appendChild(span)
       line.appendChild(renamerButton(gallery))
       line.appendChild(removalButton(gallery,line))
+      line.appendChild(span)
+      
       
       glistdiv.appendChild(line)
       glist[glist.length] = gallery}
    
-   function addFS(FS,i){
+   function addFS(FS){
       FS.id = getGalleryId(FS)
       FS.dname = (FS.dname)?FS.dname:"Gallery "+FS.id
-      addLine(FS,i)}
+      addLine(FS)}
    
    function populateFromFSArray(A){
-      A.forEach(function (FS,i) {addFS(FS,i)})}
+      A.forEach(addFS) }
    
    var addGallery, removeGallery, FileSystem
    
@@ -279,8 +274,8 @@ function make_glist() {
          this.isSpoof = true
          this.root = D
          this.id = id
-         this.dname = "Gallery "+D.name
-         console.log("FS(D).id: ",this.id)}
+         this.dname = "Gallery "+D.name      
+      }//console.log("FS(D).id: ",this.id)}
          
       addGallery = function() {
          chrome.fileSystem.chooseEntry({type:"openDirectory"},
@@ -304,7 +299,7 @@ function make_glist() {
       Local.get(kd, function(o){ 
          o.Directories.forEach(function(id,i){
             chrome.fileSystem.restoreEntry(id, function(entry){
-               addFS(new FileSystem(entry, id), i)})})}) }
+               addFS(new FileSystem(entry, id))})})}) }
             
    else{
       addGallery = function() { 
@@ -372,10 +367,10 @@ function loadBook(bookId,urls, names) { //all params should be strings or string
 function addBook(dir, fileList, books) { //maybe don't need "books" param
    var urls = fileList.map(function (x) {return x[2]})
    var names = fileList.map(function (x) {return x[1]})
-   var line = create("div", {id:dir.name,innerHTML:dir.name})
-   line.style.clear="both"
+   var line = create("li")
    line.appendChild(makeButton("","Listen",
-      function () {loadBook(dir.name,urls, names)},"right"))
+      function () {loadBook(dir.name,urls, names)}))
+   line.innerHTML+=dir.name
    //books.push(fileList); 
    Library.appendChild(line)}
         
